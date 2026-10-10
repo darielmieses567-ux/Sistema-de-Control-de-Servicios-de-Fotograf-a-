@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GestionAcademicaAPI.Models
+namespace WebApplication1.Models
 {
     public class Estudiante
     {
@@ -16,6 +16,7 @@ namespace GestionAcademicaAPI.Models
 
         [Required]
         [EmailAddress]
+        [StringLength(150)]
         public string Correo { get; set; } = string.Empty;
 
         public int CursoId { get; set; }

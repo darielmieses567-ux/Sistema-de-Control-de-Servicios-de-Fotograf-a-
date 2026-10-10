@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GestionAcademicaAPI.DTOs
+namespace WebApplication1.DTOs
 {
     public class CursoCreateDto
     {

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApplication1.models;
 
-namespace GestionAcademicaAPI.Models
+namespace WebApplication1.Models
 {
     public class Curso
     {

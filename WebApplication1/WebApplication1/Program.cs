@@ -1,5 +1,5 @@
-using GestionAcademicaAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.DATA;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +12,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

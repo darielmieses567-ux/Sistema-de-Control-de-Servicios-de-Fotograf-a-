@@ -1,7 +1,7 @@
-﻿using GestionAcademicaAPI.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplication1.Models;
 
-namespace GestionAcademicaAPI.Data
+namespace WebApplication1.DATA
 {
     public class AppDbContext : DbContext
     {
@@ -15,7 +15,8 @@ namespace GestionAcademicaAPI.Data
 
         public DbSet<Estudiante> Estudiantes { get; set; } = null!;
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(
+            ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
