@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../Fotografia.Domain/Fotografia.Domain.csproj" />
+  <Project Path="API.csproj" />
+</Solution>
