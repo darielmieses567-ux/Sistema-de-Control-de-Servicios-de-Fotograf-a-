@@ -426,3 +426,21 @@ FodyWeavers.xsd
 
 # Official VS Code C# Dev Kit Extension exclusion
 #*.lscache
+
+
+# SistemaFotografia - Visual Studio
+.vs/
+**/.vs/
+**/bin/
+**/obj/
+*.csproj.user
+*.suo
+
+# Consultas SQL temporales
+API/API/*.sql
+
+# Proyecto adicional que no forma parte de la solucion
+API/Fotografia.Application/
+
+# Archivos temporales
+*.tmp

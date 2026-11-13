@@ -1,7 +1,6 @@
-
 using Fotografia.Domain.Core;
 
-namespace Fotografia.Domain.Repository
+namespace Fotografia.Domain.Interfaces
 {
     public interface IRepository<T>
         where T : BaseEntity
