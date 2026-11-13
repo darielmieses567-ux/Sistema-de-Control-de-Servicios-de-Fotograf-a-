@@ -84,6 +84,40 @@ namespace Fotografia.Infrastructure.Migrations
                     b.ToTable("Fotografos");
                 });
 
+            modelBuilder.Entity("Fotografia.Domain.Entities.Pago", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("FechaPago")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MetodoPago")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Monto")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Observacion")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("SesionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SesionId");
+
+                    b.ToTable("Pagos");
+                });
+
             modelBuilder.Entity("Fotografia.Domain.Entities.Paquete", b =>
                 {
                     b.Property<int>("Id")
@@ -124,6 +158,9 @@ namespace Fotografia.Infrastructure.Migrations
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DuracionMinutos")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Entregado")
                         .HasColumnType("bit");
 
@@ -133,6 +170,9 @@ namespace Fotografia.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("FechaEntrega")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaEstimadaEntrega")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaSesion")
@@ -152,6 +192,10 @@ namespace Fotografia.Infrastructure.Migrations
                     b.Property<int>("PaqueteId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("PrecioAcordado")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
@@ -161,6 +205,17 @@ namespace Fotografia.Infrastructure.Migrations
                     b.HasIndex("PaqueteId");
 
                     b.ToTable("Sesiones");
+                });
+
+            modelBuilder.Entity("Fotografia.Domain.Entities.Pago", b =>
+                {
+                    b.HasOne("Fotografia.Domain.Entities.Sesion", "Sesion")
+                        .WithMany("Pagos")
+                        .HasForeignKey("SesionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Sesion");
                 });
 
             modelBuilder.Entity("Fotografia.Domain.Entities.Sesion", b =>
@@ -203,6 +258,11 @@ namespace Fotografia.Infrastructure.Migrations
             modelBuilder.Entity("Fotografia.Domain.Entities.Paquete", b =>
                 {
                     b.Navigation("Sesiones");
+                });
+
+            modelBuilder.Entity("Fotografia.Domain.Entities.Sesion", b =>
+                {
+                    b.Navigation("Pagos");
                 });
 #pragma warning restore 612, 618
         }
