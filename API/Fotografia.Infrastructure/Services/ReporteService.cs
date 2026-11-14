@@ -1,10 +1,12 @@
 ﻿
 using Fotografia.Infrastructure.Context;
+using Fotografia.Infrastructure.Contract;
+using Fotografia.Infrastructure.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fotografia.Infrastructure.Services
 {
-    public class ReporteService
+    public class ReporteService : IReporteService
     {
         private readonly FotografiaContext _context;
 
@@ -13,15 +15,19 @@ namespace Fotografia.Infrastructure.Services
             _context = context;
         }
 
-        // Total de ingresos recibidos
+        // Obtener ingresos por periodo
         public async Task<decimal> ObtenerIngresosAsync(
             DateTime fechaInicio,
             DateTime fechaFin)
         {
+            // Validar el rango de fechas
             if (fechaFin < fechaInicio)
+            {
                 throw new ArgumentException(
                     "La fecha final no puede ser anterior a la inicial.");
+            }
 
+            // Calcular los ingresos registrados
             return await _context.Pagos
                 .Where(p =>
                     p.FechaPago >= fechaInicio &&
@@ -29,7 +35,7 @@ namespace Fotografia.Infrastructure.Services
                 .SumAsync(p => (decimal?)p.Monto) ?? 0m;
         }
 
-        // Cantidad de sesiones por fotógrafo
+        // Obtener cantidad de sesiones por fotógrafo
         public async Task<Dictionary<int, int>>
             ObtenerSesionesPorFotografoAsync()
         {
@@ -46,7 +52,7 @@ namespace Fotografia.Infrastructure.Services
                     x => x.Total);
         }
 
-        // Sesiones con saldo pendiente
+        // Obtener las sesiones con pagos pendientes
         public async Task<List<ReporteSaldoPendiente>>
             ObtenerPagosPendientesAsync()
         {
@@ -66,14 +72,5 @@ namespace Fotografia.Infrastructure.Services
                 })
                 .ToListAsync();
         }
-    }
-
-    public class ReporteSaldoPendiente
-    {
-        public int SesionId { get; set; }
-        public int ClienteId { get; set; }
-        public decimal PrecioAcordado { get; set; }
-        public decimal MontoPagado { get; set; }
-        public decimal SaldoPendiente { get; set; }
     }
 }

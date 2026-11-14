@@ -3,6 +3,7 @@ using Fotografia.Domain.Entities;
 using Fotografia.Domain.Interfaces;
 using Fotografia.Domain.Repository;
 using Fotografia.Infrastructure.Context;
+using Fotografia.Infrastructure.Contract;
 using Fotografia.Infrastructure.Repositories;
 using Fotografia.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -31,11 +32,15 @@ builder.Services.AddScoped<ISesionRepository, SesionRepository>();
 builder.Services.AddScoped<IRepository<Paquete>, PaqueteRepository>();
 
 
-builder.Services.AddScoped<ClienteService>();
-builder.Services.AddScoped<PagoService>();
-builder.Services.AddScoped<SesionService>();
-builder.Services.AddScoped<EntregaService>();
-builder.Services.AddScoped<ReporteService>();
+
+
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IPagoService, PagoService>();
+builder.Services.AddScoped<ISesionService, SesionService>();
+builder.Services.AddScoped<IEntregaService, EntregaService>();
+builder.Services.AddScoped<IReporteService, ReporteService>();
+
+
 
 var app = builder.Build();
 

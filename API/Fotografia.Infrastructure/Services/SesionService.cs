@@ -2,10 +2,11 @@
 using Fotografia.Domain.Entities;
 using Fotografia.Domain.Interfaces;
 using Fotografia.Domain.Repository;
+using Fotografia.Infrastructure.Contract;
 
 namespace Fotografia.Infrastructure.Services
 {
-    public class SesionService
+    public class SesionService : ISesionService
     {
         private readonly ISesionRepository _sesionRepository;
         private readonly IFotografoRepository _fotografoRepository;
@@ -27,36 +28,48 @@ namespace Fotografia.Infrastructure.Services
         public async Task RegistrarSesionAsync(Sesion sesion)
         {
             if (sesion == null)
+            {
                 throw new ArgumentNullException(nameof(sesion));
+            }
 
             if (sesion.DuracionMinutos <= 0)
+            {
                 throw new ArgumentException(
                     "La duración debe ser mayor que cero.");
+            }
 
             if (sesion.FechaSesion <= DateTime.Now)
+            {
                 throw new ArgumentException(
                     "La sesión debe programarse para una fecha futura.");
+            }
 
             var cliente = await _clienteRepository
                 .ObtenerPorIdAsync(sesion.ClienteId);
 
             if (cliente == null)
+            {
                 throw new InvalidOperationException(
                     "El cliente seleccionado no existe.");
+            }
 
             var fotografo = await _fotografoRepository
                 .ObtenerPorIdAsync(sesion.FotografoId);
 
             if (fotografo == null)
+            {
                 throw new InvalidOperationException(
                     "El fotógrafo seleccionado no existe.");
+            }
 
             var paquete = await _paqueteRepository
                 .ObtenerPorIdAsync(sesion.PaqueteId);
 
             if (paquete == null)
+            {
                 throw new InvalidOperationException(
                     "El paquete seleccionado no existe.");
+            }
 
             DateTime fechaFin = sesion.FechaSesion
                 .AddMinutes(sesion.DuracionMinutos);
@@ -68,10 +81,11 @@ namespace Fotografia.Infrastructure.Services
                     fechaFin);
 
             if (existeChoque)
+            {
                 throw new InvalidOperationException(
                     "El fotógrafo ya tiene una sesión en ese horario.");
+            }
 
-            // Guardar el precio acordado al reservar
             sesion.PrecioAcordado = paquete.Precio;
             sesion.MontoPagado = 0;
             sesion.Estado = "Pendiente";
@@ -88,16 +102,22 @@ namespace Fotografia.Infrastructure.Services
                 .ObtenerPorIdAsync(sesionId);
 
             if (sesion == null)
+            {
                 throw new InvalidOperationException(
                     "La sesión no existe.");
+            }
 
             if (sesion.Estado == "Cancelada")
+            {
                 throw new InvalidOperationException(
                     "No se puede reprogramar una sesión cancelada.");
+            }
 
             if (nuevaFecha <= DateTime.Now)
+            {
                 throw new ArgumentException(
                     "La nueva fecha debe ser futura.");
+            }
 
             DateTime nuevaFechaFin = nuevaFecha
                 .AddMinutes(sesion.DuracionMinutos);
@@ -110,8 +130,10 @@ namespace Fotografia.Infrastructure.Services
                     sesion.Id);
 
             if (existeChoque)
+            {
                 throw new InvalidOperationException(
                     "El fotógrafo ya está ocupado en ese horario.");
+            }
 
             sesion.FechaSesion = nuevaFecha;
 
@@ -124,16 +146,22 @@ namespace Fotografia.Infrastructure.Services
                 .ObtenerPorIdAsync(sesionId);
 
             if (sesion == null)
+            {
                 throw new InvalidOperationException(
                     "La sesión no existe.");
+            }
 
             if (sesion.Estado == "Cancelada")
+            {
                 throw new InvalidOperationException(
                     "La sesión ya está cancelada.");
+            }
 
             if (sesion.Entregado)
+            {
                 throw new InvalidOperationException(
                     "No se puede cancelar una sesión entregada.");
+            }
 
             sesion.Estado = "Cancelada";
 

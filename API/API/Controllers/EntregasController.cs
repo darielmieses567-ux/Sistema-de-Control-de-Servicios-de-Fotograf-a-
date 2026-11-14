@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using Fotografia.Infrastructure.Services;
+using Fotografia.Infrastructure.Contract;
 
 namespace API.Controllers
 {
@@ -8,9 +8,9 @@ namespace API.Controllers
     [Route("api/fotografia/entregas")]
     public class EntregasController : ControllerBase
     {
-        private readonly EntregaService _entregaService;
+        private readonly IEntregaService _entregaService;
 
-        public EntregasController(EntregaService entregaService)
+        public EntregasController(IEntregaService entregaService)
         {
             _entregaService = entregaService;
         }
@@ -33,15 +33,21 @@ namespace API.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { mensaje = ex.Message });
+                return BadRequest(new
+                {
+                    mensaje = ex.Message
+                });
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { mensaje = ex.Message });
+                return Conflict(new
+                {
+                    mensaje = ex.Message
+                });
             }
         }
 
-        // Marcar como entregada
+        // Marcar una sesión como entregada
         [HttpPut("sesion/{id:int}/completar")]
         public async Task<IActionResult> CompletarEntrega(int id)
         {
@@ -56,7 +62,10 @@ namespace API.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { mensaje = ex.Message });
+                return Conflict(new
+                {
+                    mensaje = ex.Message
+                });
             }
         }
 

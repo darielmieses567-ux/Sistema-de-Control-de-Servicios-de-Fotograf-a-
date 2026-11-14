@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using Fotografia.Domain.Entities;
-using Fotografia.Infrastructure.Services;
+using Fotografia.Infrastructure.Contract;
 
 namespace API.Controllers
 {
@@ -9,14 +9,14 @@ namespace API.Controllers
     [Route("api/fotografia/sesiones")]
     public class SesionesController : ControllerBase
     {
-        private readonly SesionService _sesionService;
+        private readonly ISesionService _sesionService;
 
-        public SesionesController(SesionService sesionService)
+        public SesionesController(ISesionService sesionService)
         {
             _sesionService = sesionService;
         }
 
-        // Registrar una sesión
+
         [HttpPost]
         public async Task<IActionResult> RegistrarSesion(
             [FromBody] Sesion sesion)
@@ -41,7 +41,7 @@ namespace API.Controllers
             }
         }
 
-        // Reprogramar una sesión
+
         [HttpPut("{id:int}/reprogramar")]
         public async Task<IActionResult> ReprogramarSesion(
             int id,
@@ -67,7 +67,6 @@ namespace API.Controllers
             }
         }
 
-        // Cancelar una sesión
         [HttpPut("{id:int}/cancelar")]
         public async Task<IActionResult> CancelarSesion(int id)
         {
