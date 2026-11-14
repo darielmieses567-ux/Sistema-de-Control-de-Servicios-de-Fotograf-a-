@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../Fotografia.Domain/Fotografia.Domain.csproj" />
+  <Project Path="../Fotografia.Infrastructure/Fotografia.Infrastructure.csproj" Id="82cc32cd-c4e6-41f1-8863-ca964b06a437" />
+  <Project Path="SistemaFotografia.API.csproj" />
+</Solution>

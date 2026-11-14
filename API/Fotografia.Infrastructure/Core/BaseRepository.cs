@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Fotografia.Domain.Core;
-using Fotografia.Domain.Repository;
 using Fotografia.Infrastructure.Context;
+using Fotografia.Domain.Interfaces;
 
 namespace Fotografia.Infrastructure.Core
 {

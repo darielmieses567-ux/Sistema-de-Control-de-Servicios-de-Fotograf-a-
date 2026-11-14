@@ -1,5 +1,7 @@
-﻿using Fotografia.Domain.Core;
+﻿
+using Fotografia.Domain.Core;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fotografia.Domain.Entities
 {
@@ -13,7 +15,20 @@ namespace Fotografia.Domain.Entities
         [StringLength(50)]
         public string Estado { get; set; } = "Pendiente";
 
+        [Range(1, int.MaxValue)]
+        public int DuracionMinutos { get; set; } = 60;
+
+        [Range(typeof(decimal), "0", "79228162514264337593543950335")]
+        public decimal PrecioAcordado { get; set; }
+
+        [Range(typeof(decimal), "0", "79228162514264337593543950335")]
         public decimal MontoPagado { get; set; }
+
+        [NotMapped]
+        public decimal SaldoPendiente =>
+            PrecioAcordado - MontoPagado;
+
+        public DateTime? FechaEstimadaEntrega { get; set; }
 
         public DateTime? FechaEntrega { get; set; }
 
@@ -27,5 +42,9 @@ namespace Fotografia.Domain.Entities
 
         public int PaqueteId { get; set; }
         public Paquete? Paquete { get; set; }
+
+
+        public ICollection<Pago> Pagos { get; set; } = new List<Pago>();
+
     }
 }
