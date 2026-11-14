@@ -1,6 +1,6 @@
 ﻿
 using API.DTOs;
-using Fotografia.Infrastructure.Services;
+using Fotografia.Infrastructure.Contract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -9,13 +9,14 @@ namespace API.Controllers
     [Route("api/fotografia/pagos")]
     public class PagosController : ControllerBase
     {
-        private readonly PagoService _pagoService;
+        private readonly IPagoService _pagoService;
 
-        public PagosController(PagoService pagoService)
+        public PagosController(IPagoService pagoService)
         {
             _pagoService = pagoService;
         }
 
+        // Registrar un anticipo o abono
         [HttpPost]
         public async Task<IActionResult> RegistrarPago(
             [FromBody] PagoCreateDto datos)
@@ -43,6 +44,7 @@ namespace API.Controllers
             }
         }
 
+        // Consultar los pagos de una sesión
         [HttpGet("sesion/{sesionId:int}")]
         public async Task<IActionResult> ObtenerPagos(
             int sesionId)
@@ -61,6 +63,7 @@ namespace API.Controllers
             }));
         }
 
+        // Consultar el saldo pendiente de una sesión
         [HttpGet("sesion/{sesionId:int}/saldo")]
         public async Task<IActionResult> ObtenerSaldo(
             int sesionId)

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using API.DTOs;
 using Fotografia.Domain.Entities;
-using Fotografia.Infrastructure.Services;
+using Fotografia.Infrastructure.Contract;
 
 namespace API.Controllers
 {
@@ -10,13 +10,14 @@ namespace API.Controllers
     [Route("api/fotografia/clientes")]
     public class ClientesController : ControllerBase
     {
-        private readonly ClienteService _clienteService;
+        private readonly IClienteService _clienteService;
 
-        public ClientesController(ClienteService clienteService)
+        public ClientesController(IClienteService clienteService)
         {
             _clienteService = clienteService;
         }
 
+        // Registrar un nuevo cliente
         [HttpPost]
         public async Task<IActionResult> RegistrarCliente(
             [FromBody] ClienteCreateDto datos)

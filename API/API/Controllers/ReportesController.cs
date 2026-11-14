@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using Fotografia.Infrastructure.Services;
+using Fotografia.Infrastructure.Dtos;
+using Fotografia.Infrastructure.Contract;
 
 namespace API.Controllers
 {
@@ -8,14 +10,12 @@ namespace API.Controllers
     [Route("api/fotografia/reportes")]
     public class ReportesController : ControllerBase
     {
-        private readonly ReporteService _reporteService;
-
-        public ReportesController(ReporteService reporteService)
+        private readonly IReporteService _reporteService;
+        public ReportesController(IReporteService reporteService)
         {
             _reporteService = reporteService;
         }
 
-        // Reporte de ingresos
         [HttpGet("ingresos")]
         public async Task<IActionResult> ObtenerIngresos(
             [FromQuery] DateTime fechaInicio,
@@ -39,7 +39,6 @@ namespace API.Controllers
             }
         }
 
-        // Reporte de sesiones por fotógrafo
         [HttpGet("sesiones-por-fotografo")]
         public async Task<IActionResult>
             ObtenerSesionesPorFotografo()
@@ -50,7 +49,6 @@ namespace API.Controllers
             return Ok(datos);
         }
 
-        // Reporte de pagos pendientes
         [HttpGet("pagos-pendientes")]
         public async Task<IActionResult>
             ObtenerPagosPendientes()

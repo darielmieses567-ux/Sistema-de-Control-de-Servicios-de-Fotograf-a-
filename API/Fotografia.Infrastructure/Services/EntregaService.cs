@@ -1,10 +1,11 @@
 ﻿
 using Fotografia.Domain.Repository;
 using Fotografia.Domain.Entities;
+using Fotografia.Infrastructure.Contract;
 
 namespace Fotografia.Infrastructure.Services
 {
-    public class EntregaService
+    public class EntregaService : IEntregaService
     {
         private readonly ISesionRepository _sesionRepository;
 
@@ -22,21 +23,30 @@ namespace Fotografia.Infrastructure.Services
                 .ObtenerPorIdAsync(sesionId);
 
             if (sesion == null)
+            {
                 throw new InvalidOperationException(
                     "La sesión no existe.");
+            }
 
             if (sesion.Estado == "Cancelada")
+            {
                 throw new InvalidOperationException(
                     "No se puede programar una entrega cancelada.");
+            }
 
             if (sesion.Entregado)
+            {
                 throw new InvalidOperationException(
                     "Esta sesión ya fue entregada.");
+            }
 
             if (fechaEstimada < sesion.FechaSesion)
+            {
                 throw new ArgumentException(
                     "La entrega no puede ser anterior a la sesión.");
+            }
 
+            // Guardar la fecha estimada
             sesion.FechaEstimadaEntrega = fechaEstimada;
 
             await _sesionRepository.ActualizarAsync(sesion);
@@ -49,31 +59,38 @@ namespace Fotografia.Infrastructure.Services
                 .ObtenerPorIdAsync(sesionId);
 
             if (sesion == null)
+            {
                 throw new InvalidOperationException(
                     "La sesión no existe.");
+            }
 
             if (sesion.Estado == "Cancelada")
+            {
                 throw new InvalidOperationException(
                     "No se puede entregar una sesión cancelada.");
+            }
 
             if (sesion.Entregado)
+            {
                 throw new InvalidOperationException(
                     "Esta sesión ya fue entregada.");
+            }
 
+            // Actualizar la información de entrega
             sesion.Entregado = true;
             sesion.FechaEntrega = DateTime.Now;
 
             await _sesionRepository.ActualizarAsync(sesion);
         }
 
-        // Consultar entregas pendientes
+        // Consultar las entregas pendientes
         public async Task<List<Sesion>> ObtenerPendientesAsync()
         {
             return await _sesionRepository
                 .ObtenerPendientesEntregaAsync();
         }
 
-        // Consultar entregas atrasadas
+        // Consultar las entregas atrasadas
         public async Task<List<Sesion>> ObtenerAtrasadasAsync()
         {
             var pendientes = await _sesionRepository
